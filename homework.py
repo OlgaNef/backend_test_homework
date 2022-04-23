@@ -40,11 +40,11 @@ class Training:
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
         return self.action * self.LEN_STEP / self.M_IN_KM
-        
+
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
         return self.get_distance() / self.duration
-        
+
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         pass
@@ -69,10 +69,11 @@ class Running(Training):
                  duration: float,
                  weight: float) -> None:
         super().__init__(action, duration, weight)
-        
+
     def get_spent_calories(self) -> float:
         return ((self.coeff_run_1 * self.get_mean_speed() - self.coeff_run_2)
                 * self.weight / self.M_IN_KM * self.duration * self.M_IN_H)
+
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
@@ -93,7 +94,6 @@ class SportsWalking(Training):
                 + (self.get_mean_speed()**2 // self.height)
                 * self.coeff_wlk_2 * self.weight)
                 * self.duration * self.M_IN_H)
-        return calories
 
 
 class Swimming(Training):
@@ -117,17 +117,17 @@ class Swimming(Training):
         """Получить среднюю скорость движения."""
         return (self.length_pool * self.count_pool
                 / self.M_IN_KM / self.duration)
-        
+
     def get_spent_calories(self) -> float:
         return ((self.get_mean_speed() + self.coeff_swm_1)
                 * self.coeff_swm_2 * self.weight)
-      
+
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
     type_dict = {
-        'SWM': Swimming, 
-        'RUN': Running, 
+        'SWM': Swimming,
+        'RUN': Running,
         'WLK': SportsWalking}
     return type_dict[workout_type](*data)
 
@@ -148,4 +148,3 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         training = read_package(workout_type, data)
         main(training)
-
